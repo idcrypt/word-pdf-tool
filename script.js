@@ -1,109 +1,81 @@
-// === Helpers ===
-function showStatus(box, msg, type="loading") {
-  box.style.display = "block";
-  box.className = type;
-  box.textContent = msg;
-}
-function setProgress(wrapper, bar, percent) {
-  wrapper.style.display = "block";
-  bar.style.width = percent + "%";
-}
-function setupDropArea(area, input) {
-  area.addEventListener("click", () => input.click());
-  area.addEventListener("dragover", e => {
+// Setup drag-drop area
+function setupDropArea(label, input) {
+  label.addEventListener("click", () => input.click());
+  label.addEventListener("dragover", e => { e.preventDefault(); label.style.background="rgba(0,224,255,0.2)"; });
+  label.addEventListener("dragleave", () => label.style.background="transparent");
+  label.addEventListener("drop", e => {
     e.preventDefault();
-    area.classList.add("dragover");
+    label.style.background="transparent";
+    input.files = e.dataTransfer.files;
   });
-  area.addEventListener("dragleave", () => area.classList.remove("dragover"));
-  area.addEventListener("drop", e => {
-    e.preventDefault();
-    area.classList.remove("dragover");
-    if (e.dataTransfer.files.length) {
-      input.files = e.dataTransfer.files;
-      input.dispatchEvent(new Event("change"));
+}
+setupDropArea(document.querySelector('label[for="wordUpload"]'), document.getElementById("wordUpload"));
+setupDropArea(document.querySelector('label[for="pdfUpload"]'), document.getElementById("pdfUpload"));
+
+// Word -> PDF
+document.getElementById("convertWord").addEventListener("click", async () => {
+  const file = document.getElementById("wordUpload").files[0];
+  if (!file) return alert("Upload a Word file first!");
+  const prog = document.getElementById("wordProgress");
+  prog.hidden = false; prog.value = 10;
+
+  const reader = new FileReader();
+  reader.onload = async () => {
+    prog.value = 40;
+    // Render DOCX into preview
+    const preview = document.getElementById("preview");
+    preview.innerHTML = "";
+    const docx = new window.DocxPreview();
+    await docx.renderAsync(reader.result, preview);
+    prog.value = 60;
+
+    // Screenshot preview
+    const canvas = await html2canvas(preview, {scale:2});
+    const imgData = canvas.toDataURL("image/png");
+    prog.value = 80;
+
+    // Save to PDF
+    const { jsPDF } = window.jspdf;
+    const pdf = new jsPDF("p", "pt", "a4");
+    const pageWidth = pdf.internal.pageSize.getWidth();
+    const pageHeight = pdf.internal.pageSize.getHeight();
+    const imgProps = pdf.getImageProperties(imgData);
+    const imgHeight = (imgProps.height * pageWidth) / imgProps.width;
+    pdf.addImage(imgData, "PNG", 0, 0, pageWidth, imgHeight);
+    prog.value = 100;
+    pdf.save(file.name.replace(/\.docx$/i,"") + ".pdf");
+  };
+  reader.readAsArrayBuffer(file);
+});
+
+// PDF -> Word
+document.getElementById("convertPdf").addEventListener("click", async () => {
+  const file = document.getElementById("pdfUpload").files[0];
+  if (!file) return alert("Upload a PDF file first!");
+  const prog = document.getElementById("pdfProgress");
+  prog.hidden = false; prog.value = 10;
+
+  const reader = new FileReader();
+  reader.onload = async () => {
+    const typedarray = new Uint8Array(reader.result);
+    const pdf = await pdfjsLib.getDocument(typedarray).promise;
+    let fullText = "";
+
+    for (let i=1; i<=pdf.numPages; i++) {
+      const page = await pdf.getPage(i);
+      const content = await page.getTextContent();
+      fullText += content.items.map(it => it.str).join(" ") + "\n\n";
+      prog.value = 10 + (i/pdf.numPages * 80);
     }
-  });
-}
 
-// === DOCX ➝ PDF ===
-const docxPreview = document.getElementById("docxPreview");
-const statusBoxDocx = document.getElementById("statusBoxDocx");
-const progressDocxBar = document.getElementById("progressDocx");
-
-setupDropArea(document.getElementById("dropDocx"), document.getElementById("docxUpload"));
-
-document.getElementById("docxUpload").addEventListener("change", async e => {
-  const file = e.target.files[0];
-  if (!file) return;
-  showStatus(statusBoxDocx, "📂 Word file uploaded successfully.", "success");
-  setProgress(statusBoxDocx.nextElementSibling, progressDocxBar, 20);
-
-  const buffer = await file.arrayBuffer();
-  docxPreview.innerHTML = "";
-  window.docx.renderAsync(buffer, docxPreview);
-  setProgress(statusBoxDocx.nextElementSibling, progressDocxBar, 40);
-});
-
-document.getElementById("docxToPdf").addEventListener("click", () => {
-  if (!docxPreview.innerHTML.trim()) {
-    showStatus(statusBoxDocx, "❌ Please upload a Word file first.", "error");
-    return;
-  }
-  showStatus(statusBoxDocx, "⚡ Converting to PDF...", "loading");
-  setProgress(statusBoxDocx.nextElementSibling, progressDocxBar, 60);
-
-  html2pdf().from(docxPreview).set({
-    margin: 10,
-    filename: "converted.pdf",
-    html2canvas: { scale: 2 },
-    jsPDF: { unit: "mm", format: "a4", orientation: "portrait" }
-  }).save().then(() => {
-    showStatus(statusBoxDocx, "✅ Conversion complete!", "success");
-    setProgress(statusBoxDocx.nextElementSibling, progressDocxBar, 100);
-  });
-});
-
-// === PDF ➝ DOCX ===
-const statusBoxPdf = document.getElementById("statusBoxPdf");
-const progressPdfBar = document.getElementById("progressPdf");
-const pdfResult = document.getElementById("pdfResult");
-
-setupDropArea(document.getElementById("dropPdf"), document.getElementById("pdfUpload"));
-
-document.getElementById("pdfToDocx").addEventListener("click", async () => {
-  const input = document.getElementById("pdfUpload");
-  if (!input.files.length) {
-    showStatus(statusBoxPdf, "❌ Please upload a PDF first.", "error");
-    return;
-  }
-
-  const file = input.files[0];
-  showStatus(statusBoxPdf, "📂 PDF uploaded successfully.", "success");
-  setProgress(statusBoxPdf.nextElementSibling, progressPdfBar, 20);
-
-  const buffer = await file.arrayBuffer();
-  const pdf = await pdfjsLib.getDocument({ data: buffer }).promise;
-  let text = "";
-
-  for (let i = 1; i <= pdf.numPages; i++) {
-    const page = await pdf.getPage(i);
-    const content = await page.getTextContent();
-    text += content.items.map(it => it.str).join(" ") + "\n\n";
-    setProgress(statusBoxPdf.nextElementSibling, progressPdfBar, 20 + (i/pdf.numPages*60));
-  }
-
-  const doc = new docx.Document({
-    sections: [{
-      children: text.split("\n").map(line =>
-        new docx.Paragraph(line)
-      )
-    }]
-  });
-
-  const blob = await docx.Packer.toBlob(doc);
-  const url = URL.createObjectURL(blob);
-
-  pdfResult.innerHTML = `<a href="${url}" download="${file.name.replace(".pdf", "")}.docx">⬇ Download Word File</a>`;
-  showStatus(statusBoxPdf, "✅ Conversion complete!", "success");
-  setProgress(statusBoxPdf.nextElementSibling, progressPdfBar, 100);
+    prog.value = 95;
+    // Save as .doc (simple text-based)
+    const blob = new Blob([fullText], {type: "application/msword"});
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = file.name.replace(/\.pdf$/i,"") + ".doc";
+    link.click();
+    prog.value = 100;
+  };
+  reader.readAsArrayBuffer(file);
 });
