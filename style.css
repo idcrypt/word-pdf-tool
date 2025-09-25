@@ -31,30 +31,32 @@ h3 {
   box-shadow: 0 0 15px #00e0ff55, 0 0 25px #ff004c33;
 }
 
-/* Input Upload */
-input[type="file"] {
-  margin: 15px 0;
-  padding: 10px;
-  color: #fff;
-  border: 1px solid #333;
-  border-radius: 8px;
-  background: #111;
+/* Drop area */
+.drop-area {
+  border: 2px dashed #00e0ff;
+  border-radius: 12px;
+  padding: 20px;
   cursor: pointer;
-}
-
-input[type="file"]::-webkit-file-upload-button {
-  background: #00e0ff;
-  color: #000;
-  border: none;
-  border-radius: 6px;
-  padding: 8px 14px;
-  cursor: pointer;
+  margin: 15px auto;
+  background: rgba(0, 0, 0, 0.5);
   transition: 0.3s;
 }
+.drop-area p {
+  margin: 0;
+  color: #aaa;
+}
+.drop-area:hover {
+  background: rgba(0, 224, 255, 0.1);
+  box-shadow: 0 0 10px #00e0ff88;
+}
+.drop-area.dragover {
+  border-color: #ff004c;
+  box-shadow: 0 0 12px #ff004caa;
+}
 
-input[type="file"]::-webkit-file-upload-button:hover {
-  background: #ff004c;
-  color: #fff;
+/* Input Upload */
+input[type="file"] {
+  display: none;
 }
 
 /* Button */
@@ -70,7 +72,6 @@ button {
   box-shadow: 0 0 10px #00e0ff88, 0 0 15px #ff004c55;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
-
 button:hover {
   transform: scale(1.05);
   box-shadow: 0 0 15px #00e0ffcc, 0 0 25px #ff004caa;
@@ -84,6 +85,7 @@ button:hover {
   background: rgba(0,0,0,0.6);
   font-size: 0.95rem;
   font-weight: bold;
+  text-shadow: 0 0 8px #00e0ff;
   display: none;
   animation: fadeIn 0.4s ease;
 }
@@ -93,35 +95,13 @@ button:hover {
   text-shadow: 0 0 6px #ffcc00, 0 0 12px #ffcc00aa;
   animation: pulse 1.2s infinite;
 }
-
 .success {
   color: #00ff99;
   text-shadow: 0 0 6px #00ff99, 0 0 12px #00ff99aa;
 }
-
 .error {
   color: #ff004c;
   text-shadow: 0 0 6px #ff004c, 0 0 12px #ff004caa;
-}
-
-/* Progress Bar */
-.progress-wrapper {
-  width: 100%;
-  background: #222;
-  border-radius: 8px;
-  margin: 12px 0;
-  height: 14px;
-  overflow: hidden;
-  box-shadow: inset 0 0 8px #00e0ff55;
-  display: none;
-}
-
-#progressDocx, #progressPdf {
-  height: 100%;
-  width: 0%;
-  background: linear-gradient(90deg, #00e0ff, #ff004c);
-  box-shadow: 0 0 10px #00e0ffcc, 0 0 15px #ff004caa;
-  transition: width 0.3s ease;
 }
 
 @keyframes pulse {
@@ -129,21 +109,30 @@ button:hover {
   50% { opacity: 0.5; }
   100% { opacity: 1; }
 }
-
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(5px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* Preview / Result */
+/* Progress bar */
+.progress-wrapper {
+  width: 100%;
+  background: #222;
+  border-radius: 8px;
+  margin: 10px 0;
+  display: none;
+}
+.progress-wrapper div {
+  height: 10px;
+  width: 0%;
+  border-radius: 8px;
+  background: linear-gradient(90deg, #00e0ff, #ff004c);
+  box-shadow: 0 0 10px #00e0ff88, 0 0 15px #ff004c55;
+  transition: width 0.4s ease;
+}
+
+/* Preview */
 .preview, .result {
   margin-top: 15px;
-  padding: 10px;
-  border: 1px solid #333;
-  border-radius: 6px;
-  background: #fff;
-  color: #000;
-  text-align: left;
-  max-height: 300px;
-  overflow-y: auto;
+  color: #fff;
 }
