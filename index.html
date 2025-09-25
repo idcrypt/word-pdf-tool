@@ -2,36 +2,46 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Word ↔ PDF Converter (Full Client-Side)</title>
+  <title>Word ↔ PDF Converter (Client-Side)</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <h1>Word ↔ PDF Converter</h1>
 
+  <!-- DOCX ➝ PDF -->
   <div class="container">
     <h3>DOCX ➝ PDF (Full Layout)</h3>
     <input type="file" id="docxUpload" accept=".docx">
     <button id="docxToPdf">Convert to PDF</button>
+
+    <div id="statusBoxDocx"></div>
+    <div class="progress-wrapper">
+      <div id="progressDocx"></div>
+    </div>
+
     <div id="docxPreview" class="preview"></div>
   </div>
 
+  <!-- PDF ➝ DOCX -->
   <div class="container">
     <h3>PDF ➝ DOCX (Text Extract)</h3>
     <input type="file" id="pdfUpload" accept="application/pdf">
     <button id="pdfToDocx">Convert to Word</button>
+
+    <div id="statusBoxPdf"></div>
+    <div class="progress-wrapper">
+      <div id="progressPdf"></div>
+    </div>
+
     <div id="pdfResult" class="result"></div>
   </div>
 
-  <!-- docx-preview -->
+  <!-- Libs -->
   <script src="https://cdn.jsdelivr.net/npm/docx-preview@0.6.5/dist/docx-preview.min.js"></script>
-  <!-- html2pdf -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"></script>
-  <!-- pdf.js -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.14.305/pdf.min.js"></script>
-  <!-- docx.js -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/docx/8.3.2/docx.min.js"></script>
-
   <script src="script.js"></script>
 </body>
 </html>
