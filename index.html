@@ -8,22 +8,22 @@
 </head>
 <body>
   <h1>Word ↔ PDF Converter</h1>
-  
+
   <div class="container">
     <h3>DOCX ➝ PDF</h3>
     <input type="file" id="docxUpload" accept=".docx">
     <button id="docxToPdf">Convert to PDF</button>
-    <div id="docxResult"></div>
+    <div id="docxResult" class="result"></div>
   </div>
-  
+
   <div class="container">
     <h3>PDF ➝ DOCX</h3>
     <input type="file" id="pdfUpload" accept="application/pdf">
     <button id="pdfToDocx">Convert to Word</button>
-    <div id="pdfResult"></div>
+    <div id="pdfResult" class="result"></div>
   </div>
-  
-  <!-- Mammoth.js (Word to text) -->
+
+  <!-- Mammoth.js -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.4.2/mammoth.browser.min.js"></script>
   <!-- pdf-lib -->
   <script src="https://unpkg.com/pdf-lib/dist/pdf-lib.min.js"></script>
@@ -31,7 +31,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/docx/8.3.2/docx.min.js"></script>
   <!-- PDF.js -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.14.305/pdf.min.js"></script>
-  
+
   <script src="script.js"></script>
 </body>
 </html>
