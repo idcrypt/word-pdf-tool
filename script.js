@@ -1,59 +1,33 @@
-// === DOCX ➝ PDF ===
-document.getElementById("docxToPdf").addEventListener("click", async () => {
-  const fileInput = document.getElementById("docxUpload");
-  const resultDiv = document.getElementById("docxResult");
-  resultDiv.innerHTML = "";
+// === DOCX ➝ PDF (Full Render) ===
+const previewDiv = document.getElementById("docxPreview");
 
-  if (!fileInput.files.length) {
+document.getElementById("docxUpload").addEventListener("change", async (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+
+  const arrayBuffer = await file.arrayBuffer();
+  // render docx ke HTML
+  const docx = new window.DOCXJS.DocxPreview(previewDiv);
+  docx.render(arrayBuffer);
+});
+
+document.getElementById("docxToPdf").addEventListener("click", () => {
+  if (!previewDiv.innerHTML.trim()) {
     alert("Please upload a DOCX file first.");
     return;
   }
 
-  const file = fileInput.files[0];
-  const arrayBuffer = await file.arrayBuffer();
-
-  try {
-    const result = await window.mammoth.extractRawText({ arrayBuffer });
-    const text = result.value || "(No text found)";
-
-    // Create PDF
-    const { PDFDocument, StandardFonts, rgb } = PDFLib;
-    const pdfDoc = await PDFDocument.create();
-    let page = pdfDoc.addPage([595, 842]);
-    const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
-    const fontSize = 12;
-
-    const lines = text.split("\n");
-    let y = 800;
-
-    lines.forEach(line => {
-      if (y < 50) {
-        page = pdfDoc.addPage([595, 842]);
-        y = 800;
-      }
-      page.drawText(line, { x: 50, y, size: fontSize, font, color: rgb(1, 1, 1) });
-      y -= 20;
-    });
-
-    const pdfBytes = await pdfDoc.save();
-    const blob = new Blob([pdfBytes], { type: "application/pdf" });
-
-    // Show preview
-    const url = URL.createObjectURL(blob);
-    resultDiv.innerHTML = `<p>✅ Converted to PDF!</p>
-                           <iframe src="${url}" width="100%" height="200"></iframe>`;
-    // Auto download
-    const link = document.createElement("a");
-    link.href = url;
-    link.download = file.name.replace(".docx", "") + ".pdf";
-    link.click();
-  } catch (err) {
-    resultDiv.innerHTML = `<p style="color:red;">❌ Error: ${err.message}</p>`;
-  }
+  // convert preview ke PDF
+  html2pdf().from(previewDiv).set({
+    margin: 10,
+    filename: "converted.pdf",
+    html2canvas: { scale: 2, useCORS: true },
+    jsPDF: { unit: "mm", format: "a4", orientation: "portrait" }
+  }).save();
 });
 
 
-// === PDF ➝ DOCX ===
+// === PDF ➝ DOCX (Text Extract) ===
 document.getElementById("pdfToDocx").addEventListener("click", async () => {
   const fileInput = document.getElementById("pdfUpload");
   const resultDiv = document.getElementById("pdfResult");
@@ -78,7 +52,7 @@ document.getElementById("pdfToDocx").addEventListener("click", async () => {
       fullText += strings.join(" ") + "\n\n";
     }
 
-    // Create DOCX with extracted text
+    // buat DOCX dari teks
     const doc = new docx.Document({
       sections: [{
         properties: {},
@@ -92,14 +66,7 @@ document.getElementById("pdfToDocx").addEventListener("click", async () => {
     const url = URL.createObjectURL(blob);
 
     resultDiv.innerHTML = `<p>✅ Converted to Word!</p>
-                           <iframe src="https://view.officeapps.live.com/op/embed.aspx?src=${encodeURIComponent(url)}" 
-                                   width="100%" height="200"></iframe>`;
-
-    // Auto download
-    const link = document.createElement("a");
-    link.href = url;
-    link.download = file.name.replace(".pdf", "") + ".docx";
-    link.click();
+                           <a href="${url}" download="${file.name.replace(".pdf", "")}.docx">Download Word</a>`;
   } catch (err) {
     resultDiv.innerHTML = `<p style="color:red;">❌ Error: ${err.message}</p>`;
   }
