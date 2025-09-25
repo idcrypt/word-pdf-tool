@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Word ↔ PDF Converter</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>Word ↔ PDF Converter</h1>
+  
+  <div class="container">
+    <h3>DOCX ➝ PDF</h3>
+    <input type="file" id="docxUpload" accept=".docx">
+    <button id="docxToPdf">Convert to PDF</button>
+    <div id="docxResult"></div>
+  </div>
+  
+  <div class="container">
+    <h3>PDF ➝ DOCX</h3>
+    <input type="file" id="pdfUpload" accept="application/pdf">
+    <button id="pdfToDocx">Convert to Word</button>
+    <div id="pdfResult"></div>
+  </div>
+  
+  <!-- Mammoth.js (Word to text) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.4.2/mammoth.browser.min.js"></script>
+  <!-- pdf-lib -->
+  <script src="https://unpkg.com/pdf-lib/dist/pdf-lib.min.js"></script>
+  <!-- docx.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/docx/8.3.2/docx.min.js"></script>
+  <!-- PDF.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.14.305/pdf.min.js"></script>
+  
+  <script src="script.js"></script>
+</body>
+</html>
