@@ -9,33 +9,38 @@
 <body>
   <h1>Word ↔ PDF Converter</h1>
 
-  <!-- Word to PDF -->
   <div class="container">
     <h3>Word ➝ PDF</h3>
-    <label class="drop-area" for="wordUpload">Drop Word file here or click</label>
-    <input type="file" id="wordUpload" accept=".docx">
-    <progress id="wordProgress" value="0" max="100" hidden></progress>
-    <div><button id="convertWord">Convert to PDF</button></div>
-    <div id="preview" class="preview"></div>
+    <div class="drop-area" id="wordDrop">
+      <p>Drag & Drop your <b>.docx</b> here<br>or click to upload</p>
+      <input type="file" id="wordUpload" accept=".docx">
+    </div>
+    <div class="progress">
+      <div class="progress-bar" id="wordProgress"></div>
+    </div>
+    <button id="convertWord" disabled>Convert to PDF</button>
   </div>
 
-  <!-- PDF to Word -->
   <div class="container">
     <h3>PDF ➝ Word</h3>
-    <label class="drop-area" for="pdfUpload">Drop PDF file here or click</label>
-    <input type="file" id="pdfUpload" accept="application/pdf">
-    <progress id="pdfProgress" value="0" max="100" hidden></progress>
-    <div><button id="convertPdf">Convert to Word</button></div>
+    <div class="drop-area" id="pdfDrop">
+      <p>Drag & Drop your <b>.pdf</b> here<br>or click to upload</p>
+      <input type="file" id="pdfUpload" accept="application/pdf">
+    </div>
+    <div class="progress">
+      <div class="progress-bar" id="pdfProgress"></div>
+    </div>
+    <button id="convertPdf" disabled>Convert to Word</button>
   </div>
 
-  <!-- Libs -->
   <script src="libs/html2canvas.min.js"></script>
   <script src="libs/jspdf.umd.min.js"></script>
   <script src="libs/docx-preview.js"></script>
   <script src="libs/mammoth.browser.min.js"></script>
   <script src="libs/pdf.min.js"></script>
-
-  <!-- Script -->
+  <script>
+    pdfjsLib.GlobalWorkerOptions.workerSrc = "libs/pdf.worker.min.js";
+  </script>
   <script src="script.js"></script>
 </body>
 </html>
