@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Word ↔ PDF Converter</title>
+  <title>Word ↔ PDF Converter (Full Client-Side)</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="style.css">
 </head>
@@ -10,27 +10,27 @@
   <h1>Word ↔ PDF Converter</h1>
 
   <div class="container">
-    <h3>DOCX ➝ PDF</h3>
+    <h3>DOCX ➝ PDF (Full Layout)</h3>
     <input type="file" id="docxUpload" accept=".docx">
     <button id="docxToPdf">Convert to PDF</button>
-    <div id="docxResult" class="result"></div>
+    <div id="docxPreview" class="preview"></div>
   </div>
 
   <div class="container">
-    <h3>PDF ➝ DOCX</h3>
+    <h3>PDF ➝ DOCX (Text Extract)</h3>
     <input type="file" id="pdfUpload" accept="application/pdf">
     <button id="pdfToDocx">Convert to Word</button>
     <div id="pdfResult" class="result"></div>
   </div>
 
-  <!-- Mammoth.js -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.4.2/mammoth.browser.min.js"></script>
-  <!-- pdf-lib -->
-  <script src="https://unpkg.com/pdf-lib/dist/pdf-lib.min.js"></script>
+  <!-- docx-preview -->
+  <script src="https://cdn.jsdelivr.net/npm/docx-preview@0.6.5/dist/docx-preview.min.js"></script>
+  <!-- html2pdf -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"></script>
+  <!-- pdf.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.14.305/pdf.min.js"></script>
   <!-- docx.js -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/docx/8.3.2/docx.min.js"></script>
-  <!-- PDF.js -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.14.305/pdf.min.js"></script>
 
   <script src="script.js"></script>
 </body>
