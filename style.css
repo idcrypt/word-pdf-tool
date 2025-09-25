@@ -13,7 +13,7 @@ h1 {
 
 .container {
   margin: 20px auto;
-  max-width: 600px;
+  max-width: 700px;
   background: #1a1a1a;
   padding: 20px;
   border-radius: 12px;
@@ -49,15 +49,14 @@ button:hover {
   box-shadow: 0 0 10px #00e0ff, 0 0 20px #00e0ff;
 }
 
-.result {
+.preview, .result {
   margin-top: 15px;
   padding: 10px;
   border: 1px solid #333;
   border-radius: 6px;
-  background: #222;
-  font-size: 14px;
-  color: #fff;
+  background: #fff;
+  color: #000;
   text-align: left;
-  max-height: 200px;
+  max-height: 300px;
   overflow-y: auto;
 }
