@@ -9,39 +9,33 @@
 <body>
   <h1>Word ↔ PDF Converter</h1>
 
-  <!-- DOCX ➝ PDF -->
+  <!-- Word to PDF -->
   <div class="container">
-    <h3>DOCX ➝ PDF</h3>
-    <div id="dropDocx" class="drop-area">
-      <p>📂 Drag & Drop Word file here<br>or click to upload</p>
-      <input type="file" id="docxUpload" accept=".docx" hidden>
-    </div>
-    <button id="docxToPdf">Convert to PDF</button>
-
-    <div id="statusBoxDocx"></div>
-    <div class="progress-wrapper"><div id="progressDocx"></div></div>
-    <div id="docxPreview" class="preview"></div>
+    <h3>Word ➝ PDF</h3>
+    <label class="drop-area" for="wordUpload">Drop Word file here or click</label>
+    <input type="file" id="wordUpload" accept=".docx">
+    <progress id="wordProgress" value="0" max="100" hidden></progress>
+    <div><button id="convertWord">Convert to PDF</button></div>
+    <div id="preview" class="preview"></div>
   </div>
 
-  <!-- PDF ➝ DOCX -->
+  <!-- PDF to Word -->
   <div class="container">
-    <h3>PDF ➝ DOCX</h3>
-    <div id="dropPdf" class="drop-area">
-      <p>📂 Drag & Drop PDF file here<br>or click to upload</p>
-      <input type="file" id="pdfUpload" accept="application/pdf" hidden>
-    </div>
-    <button id="pdfToDocx">Convert to Word</button>
-
-    <div id="statusBoxPdf"></div>
-    <div class="progress-wrapper"><div id="progressPdf"></div></div>
-    <div id="pdfResult" class="result"></div>
+    <h3>PDF ➝ Word</h3>
+    <label class="drop-area" for="pdfUpload">Drop PDF file here or click</label>
+    <input type="file" id="pdfUpload" accept="application/pdf">
+    <progress id="pdfProgress" value="0" max="100" hidden></progress>
+    <div><button id="convertPdf">Convert to Word</button></div>
   </div>
 
-  <!-- Libraries -->
-  <script src="https://cdn.jsdelivr.net/npm/docx-preview@0.6.5/dist/docx-preview.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.14.305/pdf.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/docx/8.3.2/docx.min.js"></script>
+  <!-- Libs -->
+  <script src="libs/html2canvas.min.js"></script>
+  <script src="libs/jspdf.umd.min.js"></script>
+  <script src="libs/docx-preview.js"></script>
+  <script src="libs/mammoth.browser.min.js"></script>
+  <script src="libs/pdf.min.js"></script>
+
+  <!-- Script -->
   <script src="script.js"></script>
 </body>
 </html>
