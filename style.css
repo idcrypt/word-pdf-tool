@@ -1,54 +1,141 @@
+/* === Global Style === */
 body {
-  font-family: Arial, sans-serif;
-  background: #111;
-  color: #fff;
-  text-align: center;
+  font-family: 'Segoe UI', Tahoma, sans-serif;
+  background: #0a0a0a;
+  color: #eaeaea;
+  margin: 0;
   padding: 20px;
+  text-align: center;
 }
 
 h1 {
-  color: #00e0ff;
-  text-shadow: 0 0 10px #00e0ff, 0 0 20px #00e0ff;
+  font-size: 2rem;
+  margin-bottom: 20px;
+  text-shadow: 0 0 8px #00e0ff, 0 0 15px #ff004c;
+  color: #ffffff;
+}
+
+h3 {
+  color: #ffffff;
+  margin-bottom: 10px;
+  text-shadow: 0 0 6px #00e0ff;
 }
 
 .container {
   margin: 20px auto;
-  max-width: 700px;
-  background: #1a1a1a;
+  max-width: 650px;
+  background: rgba(20, 20, 20, 0.85);
+  border: 2px solid #111;
+  border-radius: 16px;
   padding: 20px;
-  border-radius: 12px;
-  box-shadow: 0 0 20px rgba(0, 224, 255, 0.3);
+  box-shadow: 0 0 15px #00e0ff55, 0 0 25px #ff004c33;
 }
 
-h3 {
-  color: #ff2d75;
-  text-shadow: 0 0 5px #ff2d75, 0 0 10px #ff2d75;
-}
-
-input {
-  margin: 10px 0;
-  display: block;
-  width: 100%;
-}
-
-button {
-  background: #00e0ff;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 6px;
+/* Input Upload */
+input[type="file"] {
+  margin: 15px 0;
+  padding: 10px;
+  color: #fff;
+  border: 1px solid #333;
+  border-radius: 8px;
+  background: #111;
   cursor: pointer;
-  margin-top: 10px;
-  font-size: 16px;
-  color: #111;
-  font-weight: bold;
+}
+
+input[type="file"]::-webkit-file-upload-button {
+  background: #00e0ff;
+  color: #000;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 14px;
+  cursor: pointer;
   transition: 0.3s;
 }
 
-button:hover {
-  background: #00b8cc;
-  box-shadow: 0 0 10px #00e0ff, 0 0 20px #00e0ff;
+input[type="file"]::-webkit-file-upload-button:hover {
+  background: #ff004c;
+  color: #fff;
 }
 
+/* Button */
+button {
+  background: linear-gradient(90deg, #00e0ff, #ff004c);
+  color: #fff;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 10px;
+  cursor: pointer;
+  margin-top: 10px;
+  font-weight: bold;
+  box-shadow: 0 0 10px #00e0ff88, 0 0 15px #ff004c55;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 15px #00e0ffcc, 0 0 25px #ff004caa;
+}
+
+/* Status Box */
+#statusBoxDocx, #statusBoxPdf {
+  margin-top: 15px;
+  padding: 12px;
+  border-radius: 10px;
+  background: rgba(0,0,0,0.6);
+  font-size: 0.95rem;
+  font-weight: bold;
+  display: none;
+  animation: fadeIn 0.4s ease;
+}
+
+.loading {
+  color: #ffcc00;
+  text-shadow: 0 0 6px #ffcc00, 0 0 12px #ffcc00aa;
+  animation: pulse 1.2s infinite;
+}
+
+.success {
+  color: #00ff99;
+  text-shadow: 0 0 6px #00ff99, 0 0 12px #00ff99aa;
+}
+
+.error {
+  color: #ff004c;
+  text-shadow: 0 0 6px #ff004c, 0 0 12px #ff004caa;
+}
+
+/* Progress Bar */
+.progress-wrapper {
+  width: 100%;
+  background: #222;
+  border-radius: 8px;
+  margin: 12px 0;
+  height: 14px;
+  overflow: hidden;
+  box-shadow: inset 0 0 8px #00e0ff55;
+  display: none;
+}
+
+#progressDocx, #progressPdf {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #00e0ff, #ff004c);
+  box-shadow: 0 0 10px #00e0ffcc, 0 0 15px #ff004caa;
+  transition: width 0.3s ease;
+}
+
+@keyframes pulse {
+  0% { opacity: 1; }
+  50% { opacity: 0.5; }
+  100% { opacity: 1; }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Preview / Result */
 .preview, .result {
   margin-top: 15px;
   padding: 10px;
