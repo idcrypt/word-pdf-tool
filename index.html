@@ -2,45 +2,39 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Word ↔ PDF Converter</title>
+  <title>Word ⇄ PDF Converter</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>Word ↔ PDF Converter</h1>
+  <h1>Word ⇄ PDF Converter</h1>
 
+  <!-- Word to PDF -->
   <div class="container">
     <h3>Word ➝ PDF</h3>
-    <div class="drop-area" id="wordDrop">
-      <p>Drag & Drop your <b>.docx</b> here<br>or click to upload</p>
-      <input type="file" id="wordUpload" accept=".docx">
-    </div>
-    <div class="progress">
-      <div class="progress-bar" id="wordProgress"></div>
-    </div>
+    <div id="wordDrop" class="drop-area">Drag & Drop Word File Here<br>or Click to Upload</div>
+    <input type="file" id="wordUpload" accept=".docx" hidden>
     <button id="convertWord" disabled>Convert to PDF</button>
+    <div class="progress"><div id="wordProgress" class="progress-bar"></div></div>
   </div>
 
+  <!-- PDF to Word -->
   <div class="container">
     <h3>PDF ➝ Word</h3>
-    <div class="drop-area" id="pdfDrop">
-      <p>Drag & Drop your <b>.pdf</b> here<br>or click to upload</p>
-      <input type="file" id="pdfUpload" accept="application/pdf">
-    </div>
-    <div class="progress">
-      <div class="progress-bar" id="pdfProgress"></div>
-    </div>
+    <div id="pdfDrop" class="drop-area">Drag & Drop PDF File Here<br>or Click to Upload</div>
+    <input type="file" id="pdfUpload" accept="application/pdf" hidden>
     <button id="convertPdf" disabled>Convert to Word</button>
+    <div class="progress"><div id="pdfProgress" class="progress-bar"></div></div>
   </div>
 
+  <!-- libs -->
   <script src="libs/html2canvas.min.js"></script>
   <script src="libs/jspdf.umd.min.js"></script>
-  <script src="libs/docx-preview.js"></script>
   <script src="libs/mammoth.browser.min.js"></script>
   <script src="libs/pdf.min.js"></script>
-  <script>
-    pdfjsLib.GlobalWorkerOptions.workerSrc = "libs/pdf.worker.min.js";
-  </script>
+  <script src="libs/pdf.worker.min.js"></script>
+
+  <!-- script -->
   <script src="script.js"></script>
 </body>
 </html>
